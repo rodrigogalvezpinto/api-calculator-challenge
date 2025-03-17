@@ -1,55 +1,106 @@
-# Challenge Backend: API REST en Spring Boot
+# API Calculator Challenge
 
-## Información General
-Desarrollar una API REST en Spring Boot (Java 21) con las siguientes funcionalidades.
+## Descripción
+API REST desarrollada en Spring Boot que implementa un servicio de cálculo con porcentaje dinámico y registro de historial de llamadas.
 
-## Funcionalidades principales
+## Tecnologías y Herramientas
 
-### 1. Cálculo con porcentaje dinámico
-- Un endpoint que reciba `num1` y `num2`, los sume y aplique un porcentaje adicional obtenido de un servicio externo (puede ser un mock con valor fijo).
+### Backend
+- **Java 21**: Versión LTS más reciente de Java
+- **Spring Boot 3.2.3**: Framework para desarrollo de aplicaciones Java
+- **Spring Data JPA**: Para la capa de persistencia
+- **Spring Cache**: Para implementación del sistema de caché
+- **Spring Validation**: Para validación de datos de entrada
+- **Lombok**: Para reducir código boilerplate
 
-### 2. Caché del porcentaje
-- El porcentaje obtenido debe almacenarse en memoria durante 30 minutos.
-- Si el servicio externo falla, se usa el último valor almacenado; si no hay, se devuelve un error.
-
-### 3. Historial de llamadas
-- Un endpoint que devuelva el historial de llamadas (fecha, endpoint, parámetros, respuesta o error).
-- El registro debe ser asíncrono para no afectar el rendimiento.
-
-## Requerimientos Técnicos
-
-### Base de datos
-- Usar PostgreSQL (en Docker) solo para almacenar el historial de llamadas.
-
-### Despliegue
-- Ejecutar la API en un contenedor Docker con un `docker-compose.yml` para levantar la API y la base de datos.
+### Base de Datos
+- **PostgreSQL 15**: Sistema de gestión de bases de datos relacional
+- **Hibernate ORM**: Framework ORM para mapeo objeto-relacional
 
 ### Documentación
-- Usar Swagger o Postman.
-- Incluir un `README.md` con instrucciones claras para ejecutar el servicio.
+- **Springdoc OpenAPI 2.3.0**: Implementación de OpenAPI 3.0 para Spring Boot
+- **Swagger UI**: Interfaz de usuario para visualizar y probar la API
 
-### Tests
-- Implementar tests unitarios para los cálculos y manejo de caché.
+### Testing
+- **JUnit 5**: Framework para pruebas unitarias
+- **Mockito**: Framework para mocks en pruebas
+- **AssertJ**: Biblioteca para aserciones fluidas y BDD
+- **Spring Boot Test**: Soporte para pruebas en Spring Boot
 
-## Entrega
+### Contenedorización
+- **Docker**: Para empaquetar la aplicación y sus dependencias
+- **Docker Compose**: Para orquestar múltiples contenedores
 
-- Código en un repositorio público (GitHub o similar).
-- Imagen publicada en Docker Hub o `docker-compose` para levantar el proyecto.
+### Herramientas de Desarrollo
+- **Maven**: Gestión de dependencias y construcción del proyecto
+- **Git**: Control de versiones
 
-## Checklist de Evaluación
+## Arquitectura
 
-### 1. Funcionalidad Correcta
-- Cálculo con porcentaje dinámico (suma + porcentaje del servicio externo o caché).
-- Caché del porcentaje (almacenado 30 min, usado si el servicio externo falla).
-- Historial de llamadas (fecha, endpoint, parámetros, respuesta/error, con paginación y registro asíncrono).
+La aplicación sigue una arquitectura en capas:
 
-### 2. Calidad del Código
-- Estructura limpia (capas bien definidas: Controller, Service, Repository).
-- Manejo de errores adecuado (`@ExceptionHandler`, códigos HTTP correctos).
-- Buenas prácticas en Java (código claro, nombres descriptivos, separación de responsabilidades).
+### Capa de Presentación
+- **Controllers**: Manejan las solicitudes HTTP y devuelven respuestas apropiadas
+- **DTOs**: Objetos de transferencia de datos para la comunicación con clientes
+- **Documentación**: Interfaces separadas para la documentación de Swagger/OpenAPI
 
-### 3. Requerimientos Técnicos
-- Base de datos PostgreSQL (corre en Docker, almacena historial de llamadas).
-- Despliegue en Docker (`docker-compose.yml` funcional, imagen en Docker Hub si aplica).
-- Documentación clara (Swagger/Postman, instrucciones en `README.md`).
-- Pruebas unitarias (`JUnit`, `Mockito`, simulación de fallos del servicio externo).
+### Capa de Negocio
+- **Services**: Contienen la lógica de negocio de la aplicación
+- **Caché**: Implementación de caché para el porcentaje obtenido del servicio externo
+
+### Capa de Persistencia
+- **Repositories**: Interfaces para acceder a la base de datos
+- **Entities**: Modelos de datos que se mapean a tablas en la base de datos
+
+### Características Principales
+
+#### 1. Cálculo con Porcentaje Dinámico
+- Endpoint REST que recibe dos números, los suma y aplica un porcentaje
+- El porcentaje se obtiene de un servicio externo (simulado con un servicio mock)
+
+#### 2. Sistema de Caché
+- Almacenamiento en memoria del porcentaje durante 30 minutos
+- Fallback al último valor conocido si el servicio externo falla
+
+#### 3. Registro Asíncrono de Historial
+- Almacenamiento asíncrono de todas las llamadas a la API
+- Consulta paginada del historial con filtros por endpoint y fecha
+
+#### 4. Separación de Responsabilidades
+- Documentación de API separada del código de los controladores
+- Tests siguiendo el enfoque BDD (Behavior-Driven Development)
+- Uso del patrón Builder para los DTOs
+
+## Estructura del Proyecto
+
+```
+src/
+├── main/
+│   ├── java/
+│   │   └── com/
+│   │       └── challenge/
+│   │           └── apicalculator/
+│   │               ├── config/           # Configuraciones (caché, RestTemplate)
+│   │               ├── controller/       # Controladores REST y documentación
+│   │               ├── exception/        # Manejo de excepciones
+│   │               ├── model/            # Entidades y DTOs
+│   │               ├── repository/       # Repositorios JPA
+│   │               ├── service/          # Servicios de negocio
+│   │               └── ApiCalculatorApplication.java
+│   └── resources/
+│       └── application.yml               # Configuración de la aplicación
+├── test/
+│   └── java/
+│       └── com/
+│           └── challenge/
+│               └── apicalculator/
+│                   ├── mocks/            # Clases mock para tests
+│                   └── service/          # Tests de servicios
+└── docker-compose.yml                    # Configuración de Docker Compose
+```
+
+## Documentación Adicional
+
+Para instrucciones detalladas sobre cómo ejecutar y probar la aplicación, consulte el archivo [INSTRUCTIONS.md](INSTRUCTIONS.md).
+
+Para probar la API usando Postman, importe la colección proporcionada en el archivo [postman_collection.json](postman_collection.json).
