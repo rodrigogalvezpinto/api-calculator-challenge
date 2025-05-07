@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiConstants.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">API Calculator</a> &gt; <a href="index.source.html" class="el_package">com.challenge.apicalculator.common.swagger</a> &gt; <span class="el_source">ApiConstants.java</span></div><h1>ApiConstants.java</h1><pre class="source lang-java linenums">package com.challenge.apicalculator.common.swagger;
+
+/**
+ * Constantes para la API
+ */
+public final class ApiConstants {
+    
+<span class="nc" id="L8">    private ApiConstants() {</span>
+<span class="nc" id="L9">        throw new IllegalStateException(&quot;Clase de constantes&quot;);</span>
+    }
+
+    // Códigos HTTP
+    public static final String HTTP_CODE_200 = &quot;200&quot;;
+    public static final String HTTP_CODE_400 = &quot;400&quot;;
+    public static final String HTTP_CODE_404 = &quot;404&quot;;
+    public static final String HTTP_CODE_500 = &quot;500&quot;;
+
+    // Mensajes de estado HTTP
+    public static final String HTTP_STATUS_200 = &quot;OK&quot;;
+    public static final String HTTP_STATUS_400 = &quot;Bad Request&quot;;
+    public static final String HTTP_STATUS_404 = &quot;Not Found&quot;;
+    public static final String HTTP_STATUS_500 = &quot;Internal Server Error&quot;;
+
+    // Mensajes de error
+    public static final String ERROR_MESSAGE_NOT_FOUND = &quot;Recurso no encontrado&quot;;
+    public static final String ERROR_MESSAGE_BAD_REQUEST = &quot;Solicitud inválida&quot;;
+    public static final String ERROR_MESSAGE_INTERNAL_ERROR = &quot;Error interno del servidor&quot;;
+
+    // Valores por defecto
+    public static final String DEFAULT_PAGE = &quot;0&quot;;
+    public static final String DEFAULT_SIZE = &quot;10&quot;;
+    public static final String DEFAULT_SORT = &quot;timestamp,desc&quot;;
+    public static final String DEFAULT_ENDPOINT = &quot;/api/v1/calculate&quot;;
+    public static final String DEFAULT_START_DATE = &quot;2024-01-01T00:00:00&quot;;
+    public static final String DEFAULT_END_DATE = &quot;2024-12-31T23:59:59&quot;;
+
+    // Ejemplos de respuesta
+    public static final String CALCULATION_RESPONSE = &quot;&quot;&quot;
+            {
+                &quot;result&quot;: 15.0,
+                &quot;number1&quot;: 10.0,
+                &quot;number2&quot;: 5.0,
+                &quot;percentage&quot;: 50.0
+            }
+            &quot;&quot;&quot;;
+
+    public static final String API_CALL_HISTORY_RESPONSE = &quot;&quot;&quot;
+            {
+                &quot;content&quot;: [
+                    {
+                        &quot;id&quot;: 1,
+                        &quot;endpoint&quot;: &quot;/api/v1/calculate&quot;,
+                        &quot;parameters&quot;: &quot;{\\&quot;number1\\&quot;: 10.0, \\&quot;number2\\&quot;: 5.0}&quot;,
+                        &quot;response&quot;: &quot;{\\&quot;result\\&quot;: 15.0, \\&quot;number1\\&quot;: 10.0, \\&quot;number2\\&quot;: 5.0, \\&quot;percentage\\&quot;: 50.0}&quot;,
+                        &quot;successful&quot;: true,
+                        &quot;errorMessage&quot;: null,
+                        &quot;timestamp&quot;: &quot;2024-03-20T10:00:00&quot;
+                    }
+                ],
+                &quot;pageable&quot;: {
+                    &quot;pageNumber&quot;: 0,
+                    &quot;pageSize&quot;: 10,
+                    &quot;sort&quot;: {
+                        &quot;sorted&quot;: true,
+                        &quot;unsorted&quot;: false,
+                        &quot;empty&quot;: false
+                    }
+                },
+                &quot;totalElements&quot;: 1,
+                &quot;totalPages&quot;: 1,
+                &quot;last&quot;: true,
+                &quot;size&quot;: 10,
+                &quot;number&quot;: 0,
+                &quot;first&quot;: true,
+                &quot;empty&quot;: false
+            }
+            &quot;&quot;&quot;;
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

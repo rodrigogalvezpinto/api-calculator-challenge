@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/mock/percentage"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "percentage": 10.0
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+} 

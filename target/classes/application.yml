@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: api-calculator
+  
+  # Configuración de la base de datos PostgreSQL
+  datasource:
+    url: jdbc:postgresql://localhost:5432/calculator_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  
+  # Configuración de JPA
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  
+  # Configuración de Jackson para fechas
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: America/Mexico_City
+
+# Configuración de la aplicación
+app:
+  cache:
+    percentage:
+      ttl-minutes: 30  # Tiempo de vida del porcentaje en caché (30 minutos)
+  
+  external-service:
+    url: http://localhost:8080/api/mock/percentage  # URL del servicio mock interno
+    timeout-seconds: 5  # Timeout para la llamada al servicio externo
+    mock: true  # Usar siempre el mock
+
+# Configuración de Swagger/OpenAPI
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+# Configuración del servidor
+server:
+  port: 8080
+  servlet:
+    context-path: /api 

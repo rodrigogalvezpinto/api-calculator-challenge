@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CallHistoryController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">API Calculator</a> &gt; <a href="index.source.html" class="el_package">com.challenge.apicalculator.adapters.inbound.api.controller</a> &gt; <span class="el_source">CallHistoryController.java</span></div><h1>CallHistoryController.java</h1><pre class="source lang-java linenums">package com.challenge.apicalculator.adapters.inbound.api.controller;
+
+import com.challenge.apicalculator.adapters.inbound.api.model.response.ApiCallHistoryResponse;
+import com.challenge.apicalculator.domain.service.ApiCallHistoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ * Controlador para gestionar el historial de llamadas a la API
+ */
+@RestController
+@RequestMapping(&quot;/api/v1/history&quot;)
+@Tag(name = &quot;Historial de Llamadas&quot;, description = &quot;API para consultar el historial de llamadas a la API&quot;)
+<span class="fc" id="L29">@RequiredArgsConstructor</span>
+<span class="fc" id="L30">@Slf4j</span>
+public class CallHistoryController {
+
+    private final ApiCallHistoryService apiCallHistoryService;
+
+    @Operation(summary = &quot;Obtener historial completo&quot;, 
+               description = &quot;Retorna el historial completo de llamadas a la API&quot;)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = &quot;200&quot;, 
+                    description = &quot;Historial obtenido exitosamente&quot;,
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,schema = @Schema(implementation = ApiCallHistoryResponse.class))),
+        @ApiResponse(responseCode = &quot;500&quot;, 
+                    description = &quot;Error interno del servidor&quot;,
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,schema = @Schema(implementation = ErrorResponse.class)))
+    })
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;ApiCallHistoryResponse&gt;&gt; getHistory() {
+<span class="fc" id="L48">        return ResponseEntity.ok(apiCallHistoryService.getApiCallHistory());</span>
+    }
+
+    @Operation(summary = &quot;Obtener historial por endpoint&quot;, 
+               description = &quot;Retorna el historial de llamadas filtrado por un endpoint específico&quot;)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = &quot;200&quot;, 
+                    description = &quot;Historial obtenido exitosamente&quot;,
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,schema = @Schema(implementation = ApiCallHistoryResponse.class))),
+        @ApiResponse(responseCode = &quot;400&quot;, 
+                    description = &quot;Endpoint inválido&quot;,
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,schema = @Schema(implementation = ErrorResponse.class))),
+        @ApiResponse(responseCode = &quot;500&quot;, 
+                    description = &quot;Error interno del servidor&quot;,
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,schema = @Schema(implementation = ErrorResponse.class)))
+    })
+
+    @GetMapping(&quot;/endpoint/{endpoint}&quot;)
+    public ResponseEntity&lt;List&lt;ApiCallHistoryResponse&gt;&gt; getHistoryByEndpoint(
+        @Parameter(description = &quot;Endpoint a filtrar&quot;, required = true)
+        @PathVariable String endpoint) {
+<span class="fc" id="L69">        return ResponseEntity.ok(apiCallHistoryService.getApiCallHistoryByEndpoint(endpoint));</span>
+    }
+
+
+    @Operation(summary = &quot;Obtener historial por rango de fechas&quot;, 
+               description = &quot;Retorna el historial de llamadas dentro de un rango de fechas específico&quot;)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = &quot;200&quot;, 
+                    description = &quot;Historial obtenido exitosamente&quot;,
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,schema = @Schema(implementation = ApiCallHistoryResponse.class))),
+        @ApiResponse(responseCode = &quot;400&quot;, 
+                    description = &quot;Rango de fechas inválido&quot;,
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,schema = @Schema(implementation = ErrorResponse.class))),
+        @ApiResponse(responseCode = &quot;500&quot;, 
+                    description = &quot;Error interno del servidor&quot;,
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,schema = @Schema(implementation = ErrorResponse.class)))
+    })
+
+    @GetMapping(&quot;/date-range&quot;)
+    public ResponseEntity&lt;List&lt;ApiCallHistoryResponse&gt;&gt; getHistoryByDateRange(
+        @Parameter(description = &quot;Fecha de inicio (formato: yyyy-MM-dd'T'HH:mm:ss)&quot;, required = true)
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+        @Parameter(description = &quot;Fecha de fin (formato: yyyy-MM-dd'T'HH:mm:ss)&quot;, required = true)
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+<span class="nc" id="L93">        return ResponseEntity.ok(apiCallHistoryService.getApiCallHistoryByDateRange(startDate, endDate));</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiCallHistoryEntityMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">API Calculator</a> &gt; <a href="index.source.html" class="el_package">com.challenge.apicalculator.adapters.outbound.repository.mapper</a> &gt; <span class="el_source">ApiCallHistoryEntityMapper.java</span></div><h1>ApiCallHistoryEntityMapper.java</h1><pre class="source lang-java linenums">package com.challenge.apicalculator.adapters.outbound.repository.mapper;
+
+import com.challenge.apicalculator.adapters.outbound.repository.entity.ApiCallHistoryEntity;
+import com.challenge.apicalculator.domain.model.ApiCallHistory;
+import org.springframework.stereotype.Component;
+
+/**
+ * Mapper para convertir entre entidades de dominio y entidades de persistencia de ApiCallHistory
+ */
+@Component
+<span class="nc" id="L11">public class ApiCallHistoryEntityMapper {</span>
+
+    /**
+     * Convierte una entidad de dominio a una entidad de persistencia
+     */
+    public ApiCallHistoryEntity toEntity(ApiCallHistory apiCallHistory) {
+<span class="nc" id="L17">        return ApiCallHistoryEntity.builder()</span>
+<span class="nc" id="L18">                .id(apiCallHistory.getId())</span>
+<span class="nc" id="L19">                .endpoint(apiCallHistory.getEndpoint())</span>
+<span class="nc" id="L20">                .parameters(apiCallHistory.getParameters())</span>
+<span class="nc" id="L21">                .response(apiCallHistory.getResponse())</span>
+<span class="nc" id="L22">                .successful(apiCallHistory.isSuccessful())</span>
+<span class="nc" id="L23">                .errorMessage(apiCallHistory.getErrorMessage())</span>
+<span class="nc" id="L24">                .timestamp(apiCallHistory.getTimestamp())</span>
+<span class="nc" id="L25">                .build();</span>
+    }
+
+    /**
+     * Convierte una entidad de persistencia a una entidad de dominio
+     */
+    public ApiCallHistory toDomain(ApiCallHistoryEntity entity) {
+<span class="nc" id="L32">        return ApiCallHistory.builder()</span>
+<span class="nc" id="L33">                .id(entity.getId())</span>
+<span class="nc" id="L34">                .endpoint(entity.getEndpoint())</span>
+<span class="nc" id="L35">                .parameters(entity.getParameters())</span>
+<span class="nc" id="L36">                .response(entity.getResponse())</span>
+<span class="nc" id="L37">                .successful(entity.isSuccessful())</span>
+<span class="nc" id="L38">                .errorMessage(entity.getErrorMessage())</span>
+<span class="nc" id="L39">                .timestamp(entity.getTimestamp())</span>
+<span class="nc" id="L40">                .build();</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

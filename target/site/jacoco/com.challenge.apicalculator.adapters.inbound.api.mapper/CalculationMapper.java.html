@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CalculationMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">API Calculator</a> &gt; <a href="index.source.html" class="el_package">com.challenge.apicalculator.adapters.inbound.api.mapper</a> &gt; <span class="el_source">CalculationMapper.java</span></div><h1>CalculationMapper.java</h1><pre class="source lang-java linenums">package com.challenge.apicalculator.adapters.inbound.api.mapper;
+
+import com.challenge.apicalculator.adapters.inbound.api.model.request.CalculationRequest;
+import com.challenge.apicalculator.adapters.inbound.api.model.response.CalculationResponse;
+import com.challenge.apicalculator.domain.model.Calculation;
+import org.springframework.stereotype.Component;
+
+/**
+ * Mapper para convertir entre DTOs y entidades de cálculo
+ */
+@Component
+<span class="nc" id="L12">public class CalculationMapper implements BaseMapper&lt;CalculationResponse, Calculation&gt; {</span>
+
+    @Override
+    public CalculationResponse toDto(Calculation entity) {
+<span class="nc bnc" id="L16" title="All 2 branches missed.">        if (entity == null) {</span>
+<span class="nc" id="L17">            return null;</span>
+        }
+
+<span class="nc" id="L20">        return CalculationResponse.builder()</span>
+<span class="nc" id="L21">            .result(entity.getResult())</span>
+<span class="nc" id="L22">            .number1(entity.getNumber1())</span>
+<span class="nc" id="L23">            .number2(entity.getNumber2())</span>
+<span class="nc" id="L24">            .percentage(entity.getPercentage())</span>
+<span class="nc" id="L25">            .build();</span>
+    }
+
+    @Override
+    public Calculation toEntity(CalculationResponse dto) {
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (dto == null) {</span>
+<span class="nc" id="L31">            return null;</span>
+        }
+
+<span class="nc" id="L34">        return Calculation.builder()</span>
+<span class="nc" id="L35">            .result(dto.getResult())</span>
+<span class="nc" id="L36">            .number1(dto.getNumber1())</span>
+<span class="nc" id="L37">            .number2(dto.getNumber2())</span>
+<span class="nc" id="L38">            .percentage(dto.getPercentage())</span>
+<span class="nc" id="L39">            .build();</span>
+    }
+
+    /**
+     * Convierte un request a entidad de cálculo
+     */
+    public Calculation toEntity(CalculationRequest request) {
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        if (request == null) {</span>
+<span class="nc" id="L47">            return null;</span>
+        }
+
+<span class="nc" id="L50">        return Calculation.builder()</span>
+<span class="nc" id="L51">            .number1(request.getNumber1())</span>
+<span class="nc" id="L52">            .number2(request.getNumber2())</span>
+<span class="nc" id="L53">            .build();</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

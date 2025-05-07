@@ -1,0 +1,258 @@
+{
+	"info": {
+		"_postman_id": "e5f7b8c9-d0a1-4b2c-8e3f-5a6b7c8d9e0f",
+		"name": "API Calculator Challenge",
+		"description": "Colección para probar la API Calculator Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Cálculo",
+			"item": [
+				{
+					"name": "Calcular con porcentaje dinámico",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"num1\": 10.0,\n    \"num2\": 20.0\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/calculator/calculate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"calculator",
+								"calculate"
+							]
+						},
+						"description": "Suma dos números y aplica un porcentaje dinámico obtenido del servicio externo."
+					},
+					"response": []
+				},
+				{
+					"name": "Calcular con valores negativos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"num1\": -5.0,\n    \"num2\": -10.0\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/calculator/calculate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"calculator",
+								"calculate"
+							]
+						},
+						"description": "Suma dos números negativos y aplica un porcentaje dinámico."
+					},
+					"response": []
+				},
+				{
+					"name": "Calcular con valores decimales",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"num1\": 10.5,\n    \"num2\": 20.75\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/calculator/calculate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"calculator",
+								"calculate"
+							]
+						},
+						"description": "Suma dos números decimales y aplica un porcentaje dinámico."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints relacionados con cálculos"
+		},
+		{
+			"name": "Historial",
+			"item": [
+				{
+					"name": "Obtener historial",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/history?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"history"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Número de página (0-indexed)"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"description": "Tamaño de página"
+								}
+							]
+						},
+						"description": "Obtiene el historial de llamadas paginado."
+					},
+					"response": []
+				},
+				{
+					"name": "Filtrar historial por endpoint",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/history/endpoint?endpoint=/calculator/calculate&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"history",
+								"endpoint"
+							],
+							"query": [
+								{
+									"key": "endpoint",
+									"value": "/calculator/calculate",
+									"description": "Endpoint a filtrar"
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Número de página (0-indexed)"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"description": "Tamaño de página"
+								}
+							]
+						},
+						"description": "Filtra el historial de llamadas por endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Filtrar historial por rango de fechas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/history/date-range?startDate=2023-01-01T00:00:00&endDate=2025-12-31T23:59:59&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"history",
+								"date-range"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2023-01-01T00:00:00",
+									"description": "Fecha de inicio (formato ISO)"
+								},
+								{
+									"key": "endDate",
+									"value": "2025-12-31T23:59:59",
+									"description": "Fecha de fin (formato ISO)"
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Número de página (0-indexed)"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"description": "Tamaño de página"
+								}
+							]
+						},
+						"description": "Filtra el historial de llamadas por rango de fechas."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints relacionados con el historial de llamadas"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		}
+	]
+} 

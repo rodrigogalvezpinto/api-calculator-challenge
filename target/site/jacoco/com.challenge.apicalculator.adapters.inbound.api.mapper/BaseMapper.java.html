@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">API Calculator</a> &gt; <a href="index.source.html" class="el_package">com.challenge.apicalculator.adapters.inbound.api.mapper</a> &gt; <span class="el_source">BaseMapper.java</span></div><h1>BaseMapper.java</h1><pre class="source lang-java linenums">package com.challenge.apicalculator.adapters.inbound.api.mapper;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Interfaz base para mappers
+ */
+public interface BaseMapper&lt;D, E&gt; {
+    
+    /**
+     * Convierte una entidad a DTO
+     */
+    D toDto(E entity);
+
+    /**
+     * Convierte un DTO a entidad
+     */
+    E toEntity(D dto);
+
+    /**
+     * Convierte una lista de entidades a DTOs
+     */
+    default List&lt;D&gt; toDtoList(List&lt;E&gt; entities) {
+<span class="nc" id="L25">        return entities.stream()</span>
+<span class="nc" id="L26">            .map(this::toDto)</span>
+<span class="nc" id="L27">            .collect(Collectors.toList());</span>
+    }
+
+    /**
+     * Convierte una lista de DTOs a entidades
+     */
+    default List&lt;E&gt; toEntityList(List&lt;D&gt; dtos) {
+<span class="nc" id="L34">        return dtos.stream()</span>
+<span class="nc" id="L35">            .map(this::toEntity)</span>
+<span class="nc" id="L36">            .collect(Collectors.toList());</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

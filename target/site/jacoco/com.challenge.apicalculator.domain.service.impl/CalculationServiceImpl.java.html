@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CalculationServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">API Calculator</a> &gt; <a href="index.source.html" class="el_package">com.challenge.apicalculator.domain.service.impl</a> &gt; <span class="el_source">CalculationServiceImpl.java</span></div><h1>CalculationServiceImpl.java</h1><pre class="source lang-java linenums">package com.challenge.apicalculator.domain.service.impl;
+
+import com.challenge.apicalculator.adapters.inbound.api.mapper.CalculationMapper;
+import com.challenge.apicalculator.adapters.inbound.api.model.request.CalculationRequest;
+import com.challenge.apicalculator.adapters.inbound.api.model.response.CalculationResponse;
+import com.challenge.apicalculator.domain.exception.ApiCalculatorException;
+import com.challenge.apicalculator.domain.model.Calculation;
+import com.challenge.apicalculator.domain.service.ApiCallHistoryService;
+import com.challenge.apicalculator.domain.service.CalculationService;
+import com.challenge.apicalculator.domain.service.PercentageService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+/**
+ * Implementación del servicio de cálculos
+ */
+@Service
+<span class="nc" id="L22">@RequiredArgsConstructor</span>
+<span class="nc" id="L23">@Slf4j</span>
+public class CalculationServiceImpl implements CalculationService {
+
+    private final CalculationMapper calculationMapper;
+    private final ApiCallHistoryService apiCallHistoryService;
+    private final PercentageService percentageService;
+    private final ObjectMapper objectMapper;
+
+    @Override
+    public CalculationResponse calculate(CalculationRequest request) {
+<span class="nc" id="L33">        String paramsJson = null;</span>
+<span class="nc" id="L34">        String responseJson = null;</span>
+        try {
+<span class="nc" id="L36">            log.debug(&quot;Iniciando cálculo para request: {}&quot;, request);</span>
+            
+            // Obtener el porcentaje dinámico
+<span class="nc" id="L39">            double percentage = percentageService.getDynamicPercentage();</span>
+<span class="nc" id="L40">            log.debug(&quot;Porcentaje obtenido: {}&quot;, percentage);</span>
+
+            // Convertir request a entidad
+<span class="nc" id="L43">            Calculation calculation = calculationMapper.toEntity(request);</span>
+<span class="nc" id="L44">            calculation.setPercentage(percentage);</span>
+            
+            // Realizar cálculo
+<span class="nc" id="L47">            Calculation result = performCalculation(calculation);</span>
+<span class="nc" id="L48">            log.debug(&quot;Cálculo realizado: {}&quot;, result);</span>
+            
+            // Convertir resultado a DTO
+<span class="nc" id="L51">            CalculationResponse response = calculationMapper.toDto(result);</span>
+            
+            // Serializar parámetros y respuesta como JSON
+<span class="nc" id="L54">            paramsJson = objectMapper.writeValueAsString(request);</span>
+<span class="nc" id="L55">            responseJson = objectMapper.writeValueAsString(response);</span>
+            
+            // Registrar llamada exitosa
+<span class="nc" id="L58">            apiCallHistoryService.logApiCall(</span>
+                &quot;/api/v1/calculations&quot;,
+                paramsJson,
+                responseJson,
+                null,
+                true
+            );
+            
+<span class="nc" id="L66">            return response;</span>
+<span class="nc" id="L67">        } catch (Exception e) {</span>
+<span class="nc" id="L68">            log.error(&quot;Error en el cálculo: {}&quot;, e.getMessage(), e);</span>
+            try {
+<span class="nc bnc" id="L70" title="All 2 branches missed.">                if (paramsJson == null) paramsJson = objectMapper.writeValueAsString(request);</span>
+<span class="nc" id="L71">            } catch (JsonProcessingException ignored) {}</span>
+            // Registrar llamada fallida
+<span class="nc" id="L73">            apiCallHistoryService.logApiCall(</span>
+                &quot;/api/v1/calculations&quot;,
+<span class="nc bnc" id="L75" title="All 2 branches missed.">                paramsJson != null ? paramsJson : request.toString(),</span>
+                null,
+<span class="nc" id="L77">                e.getMessage(),</span>
+                false
+            );
+<span class="nc" id="L80">            throw new ApiCalculatorException(HttpStatus.INTERNAL_SERVER_ERROR, &quot;CALCULATION_ERROR&quot;, &quot;Error en el cálculo: &quot; + e.getMessage());</span>
+        }
+    }
+
+    private Calculation performCalculation(Calculation calculation) {
+<span class="nc" id="L85">        double sum = calculation.getNumber1() + calculation.getNumber2();</span>
+<span class="nc" id="L86">        double percentage = calculation.getPercentage();</span>
+<span class="nc" id="L87">        double finalResult = sum * (1 + percentage / 100);</span>
+<span class="nc" id="L88">        return Calculation.builder()</span>
+<span class="nc" id="L89">            .number1(calculation.getNumber1())</span>
+<span class="nc" id="L90">            .number2(calculation.getNumber2())</span>
+<span class="nc" id="L91">            .percentage(percentage)</span>
+<span class="nc" id="L92">            .result(finalResult)</span>
+<span class="nc" id="L93">            .build();</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
